@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="dep/bootstrap/css/bootstrap.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="icon" href="images/icon.png">
+
+  <title>Create Account</title>
+  <!-- Bootstrap core CSS -->
+  <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link rel="stylesheet" type="text/css" href="styles/loginStyle.css">
+
+</head>
+
+<body class="text-center">
+  <form class="form-signin">
+
+    <div class = "errorTextDiv">
+      <h6 id = errorText > </h6>
+    </div>
+
+    <h1 class="h3 mb-3 font-weight-normal">Enter Your Information To Create An Account</h1>
+
+    <label for="inputName" class="sr-only">Full Name</label>
+    <input type="name" id="inputName" class="form-control" placeholder="Full Name" required autofocus>
+
+    <label for="inputEmail" class="sr-only">Email Address</label>
+    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+
+    <button id = "submitButton" class="btn btn-lg btn-primary btn-block" type="button" onclick="createAccount()" >Create Account</button>
+
+    <a class="mt-5 mb-3 text-muted"  >&copy; MitchVendor 2020</a>
+  </form>
+
+  <!-- Bootstrap Include ( LOCAL SOURCE ) -->
+  <script src="dep/bootstrap/js/bootstrap.min.js"></script>
+  <!--  JQuery Include ( WEB SOURCE ) -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+  <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-analytics.js"></script>
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-firestore.js"></script>
+
+  <script type="text/javascript">
+    var firebaseConfig = {
+      apiKey: "AIzaSyC4EQ21Gr2shjdcvQPPEMyAM9Q48LHIYo4",
+      authDomain: "mitchvending-9bfc8.firebaseapp.com",
+      databaseURL: "https://mitchvending-9bfc8.firebaseio.com",
+      projectId: "mitchvending-9bfc8",
+      storageBucket: "mitchvending-9bfc8.appspot.com",
+      messagingSenderId: "475373845114",
+      appId: "1:475373845114:web:0d153677affa6cc6d619c3",
+      measurementId: "G-1FM631J6S6"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+
+
+    function createAccount () {
+
+        var name = document.getElementById('inputName').value;
+        var email = document.getElementById('inputEmail').value;
+        var password = document.getElementById('inputPassword').value;
+
+        if (email.length < 4) {
+          document.getElementById('errorText').innerHTML = "ERROR: EMAIL TOO SHORT";
+          document.getElementById('errorText').style.color = '#f00404';
+          return;
+        }
+        if (password.length < 4) {
+          document.getElementById('errorText').innerHTML = "ERROR: PASSWORD TOO SHORT";
+          document.getElementById('errorText').style.color = '#f00404';
+          return;
+        }
+
+        firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+
+          var errorCode = error.code;
+          var errorMessage = error.message;
+
+        });
+
+        document.getElementById('errorText').innerHTML = "SUCCESS:REDIRECTING...";
+        document.getElementById('errorText').style.color = '#07a503';
+        redirectLogin();
+
+      }
+
+      function resolveAfter2Seconds(x) {
+        return new Promise(resolve => {
+          setTimeout(() => {
+            resolve(x);
+          }, 2000);
+        });
+      }
+
+      async function redirectLogin() {
+        var x = await resolveAfter2Seconds(10);
+        window.location.href = "./index.html";
+      }
+
+
+
+  </script>
+
+</body>
+
+
+
+
+</html>

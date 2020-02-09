@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>MitchVendor Dashboard</title>
+  <link rel="stylesheet" href="dep/bootstrap/css/bootstrap.min.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, height = device-height, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="dep/chartist/dist/chartist.css">
+  <link rel="stylesheet" type="text/css" href="styles/style.css">
+  <!-- IMPOTRANT TO IMORT style.css after chartist.css DUE TO OVERRIDES -->
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg">
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#" >Dashboard <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Locations <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Revenue <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Inventory <span class="sr-only">(current)</span></a>
+        </li>
+
+      </ul>
+
+      <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+       <ul class="navbar-nav ml-auto">
+         <li class="nav-item dropdown">
+             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                 <span class="no-icon"> Settings</span>
+             </a>
+             <div class="dropdown-menu pull-left" aria-labelledby="navbarDropdownMenuLink">
+                 <a class="dropdown-item" onclick = "testLog()" href="#">Action</a>
+                 <a class="dropdown-item" href="#">Another action</a>
+                 <a class="dropdown-item" href="#">Something</a>
+                 <a class="dropdown-item" href="#">Manage Users</a>
+                  <div class="dropdown-divider"></div>
+                 <a class="dropdown-item" href="#">Sign Out</a>
+             </div>
+           </li>
+         </ul>
+       </div>
+     </div>
+
+  </nav>
+  <div class = "container-fluid">
+    <div class ="row justify-content-around flex-nowrap m-2"  >
+      <div class = "card col-8  pl-0 pr-0 m-2" >
+
+
+          <div class= "card-header text-center p-1 " >
+            <h4 class = "mt-1"> Revenue & Profits </h4>
+          </div>
+          <div class = "card-body p-1" >
+            <div class = "ct-chart ct-octave">
+            </div>
+          </div>
+          <div class = "card-footer">
+            <div class= "row m-1 flex-nowrap">
+              <div class = "col-4 m-1">
+                <button class="btn btn-block bg-secondary" onclick="updateWeekly()"type="button" submit = "false">Weekly</button>
+              </div>
+              <div class = "col-4 m-1">
+                <button class="btn btn-block bg-secondary" onclick="updateMonthly()" type="button" submit = "false">Monthly</button>
+              </div>
+              <div class = "col-4 m-1">
+                <button class="btn btn-block bg-secondary" onclick = "updateYearly()"type="button" submit = "false" onclick="doLogin()">Yearly</button>
+              </div>
+            </div>
+          </div>
+
+      </div>
+
+      <div class = "card col-4 pl-0 pr-0 m-2" >
+        <div class= "card-header text-center p-1"  >
+          <h4 class = "mt-1"> Recent Locations </h4>
+        </div>
+        <div class = "card-body p-0" >
+          <ul class="list-group">
+            <li class="list-group-item" id="listItem1"></li>
+            <li class="list-group-item">0645 Plaza De Noexsisto, Visalia, CA</li>
+            <li class="list-group-item">01 Hot As Hell Dr, Phoenix, AZ</li>
+            <li class="list-group-item">55542 Dummy Rd, Sacremento, CA</li>
+            <li class="list-group-item">15 Ghetto Rd, Compton, CA</li>
+            <li class="list-group-item">29266 Ellensburg Ave, Gold Beach, OR</li>
+            <li class="list-group-item">12 Fake St, Santa Rosa, CA</li>
+            <li class="list-group-item">15456 Rodeo, Pasadena, CA</li>
+            <li class="list-group-item">1523 Rio Grande St, Mesa, AZ</li>
+            <li class="list-group-item">1516 Real St, Los Angeles, CA</li>
+            <!-- CLAMP AFTER TEN ITEMS!!!!! !-->
+
+          </ul>
+        </div>
+      </div>
+
+
+    </div>
+    <script src = "dep/chartist/dist/chartist.js"> </script>
+
+    <script type = "text/javascript">
+
+    var weeklyData = {
+       labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri','Sat','Sun'],
+       series: [
+         [5, 3, 4, 6, 3, 5, 4]
+       ]
+    };
+    var monthlyData = {
+       labels: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30'],
+       series: [
+         [10,12,13,12,11,10,9,10,9,10,11,12,13,13,13,14,12,13,14,15,14,14,13,12,14,10,11,12,14,15]
+       ]
+    };
+    var yearlyData = {
+       labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'],
+       series: [
+         [5, 3, 4, 6, 3, 5, 4, 5, 4 ,3, 4, 4]
+       ]
+    };
+
+   var chart1 = new Chartist.Bar('.ct-chart', weeklyData);
+
+   function updateWeekly() {
+     chart1.update(weeklyData);
+   }
+   function updateMonthly() {
+     chart1.update(monthlyData);
+
+   }
+   function updateYearly() {
+     chart1.update(yearlyData);
+
+   }
+
+
+
+    </script>
+ </div>
+
+
+    <!--  JQuery Include ( WEB SOURCE ) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap Include ( LOCAL SOURCE ) -->
+    <script src = "dep/bootstrap/js/bootstrap.bundle.js"> </script>
+
+
+    <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-firestore.js"></script>
+
+    <script type="text/javascript">
+
+      var firebaseConfig = {
+        apiKey: "AIzaSyC4EQ21Gr2shjdcvQPPEMyAM9Q48LHIYo4",
+        authDomain: "mitchvending-9bfc8.firebaseapp.com",
+        databaseURL: "https://mitchvending-9bfc8.firebaseio.com",
+        projectId: "mitchvending-9bfc8",
+        storageBucket: "mitchvending-9bfc8.appspot.com",
+        messagingSenderId: "475373845114",
+        appId: "1:475373845114:web:0d153677affa6cc6d619c3",
+        measurementId: "G-1FM631J6S6"
+        };
+
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+
+
+      var db = firebase.firestore();
+
+      var docRef = db.collection("locations").doc("locations");
+
+      docRef.get().then(function(doc) {
+          if (doc.exists) {
+              console.log("Document data:", doc.data());
+              var temp0 = doc.data()[0];
+              document.getElementById("listItem1").innerHTML = temp0;
+              console.log(temp0);
+          } else {
+              // doc.data() will be undefined in this case
+              console.log("No such document!");
+          }
+      }).catch(function(error) {
+          console.log("Error getting document:", error);
+      });
+
+
+
+
+
+
+      function signOut() {
+        firebase.auth().signOut().then(function() {
+          // Sign-out successful.
+        }).catch(function(error) {
+          // An error happened.
+        });
+
+      }
+
+
+  </script>
+
+
+</body>
+
+
+</html>
