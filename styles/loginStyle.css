@@ -1,5 +1,4 @@
-html,
-body {
+html, body {
   height: 100%;
 }
 
@@ -45,5 +44,4 @@ body {
 .form-signin .errorTextDiv {
   overflow: hidden;
   white-space: nowrap;
-  
 }

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>MitchVendor Dashboard</title>
+  <title>Dashboard</title>
   <link rel="stylesheet" href="dep/bootstrap/css/bootstrap.min.css">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, height = device-height, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="dep/chartist/dist/chartist.css">
   <link rel="stylesheet" type="text/css" href="styles/style.css">
-  <!-- IMPOTRANT TO IMORT style.css after chartist.css DUE TO OVERRIDES -->
+  <!-- IMPOTRANT TO IMPORT style.css after chartist.css DUE TO OVERRIDES -->
 
 </head>
 
@@ -21,10 +21,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="#" >Dashboard <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="dashboard.html" >Dashboard <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="#">Locations <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="locations.html">Locations <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item active">
           <a class="nav-link" href="#">Revenue <span class="sr-only">(current)</span></a>
@@ -47,7 +47,7 @@
                  <a class="dropdown-item" href="#">Something</a>
                  <a class="dropdown-item" href="#">Manage Users</a>
                   <div class="dropdown-divider"></div>
-                 <a class="dropdown-item" href="#">Sign Out</a>
+                 <a class="dropdown-item" onclick="signOut()">Sign Out</a>
              </div>
            </li>
          </ul>
@@ -57,7 +57,7 @@
   </nav>
   <div class = "container-fluid">
     <div class ="row justify-content-around flex-nowrap m-2"  >
-      <div class = "card col-8  pl-0 pr-0 m-2" >
+      <div class = "card col-8  pl-0 pr-0 m-1" >
 
 
           <div class= "card-header text-center p-1 " >
@@ -83,7 +83,7 @@
 
       </div>
 
-      <div class = "card col-4 pl-0 pr-0 m-2" >
+      <div class = "card col-4 pl-0 pr-0 m-1" >
         <div class= "card-header text-center p-1"  >
           <h4 class = "mt-1"> Recent Locations </h4>
         </div>
@@ -158,7 +158,6 @@
 
 
     <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-firestore.js"></script>
 
@@ -175,36 +174,47 @@
         measurementId: "G-1FM631J6S6"
         };
 
-      firebase.initializeApp(firebaseConfig);
-      firebase.analytics();
+      firebaseMain = firebase.initializeApp(firebaseConfig,"mitchVendorWeb");
+      firebaseMain.auth();
 
 
-      var db = firebase.firestore();
+      var db = firebaseMain.firestore();
 
-      var docRef = db.collection("locations").doc("locations");
 
-      docRef.get().then(function(doc) {
-          if (doc.exists) {
-              console.log("Document data:", doc.data());
-              var temp0 = doc.data()[0];
-              document.getElementById("listItem1").innerHTML = temp0;
-              console.log(temp0);
-          } else {
-              // doc.data() will be undefined in this case
-              console.log("No such document!");
-          }
-      }).catch(function(error) {
-          console.log("Error getting document:", error);
+
+
+      firebaseMain.auth().onAuthStateChanged(function(user) {
+        if (user) { firebaseAuthenticated(); }
+        else {
+          document.location.href = "./index.html";
+        }
       });
 
 
+      function firebaseAuthenticated() {
 
+        var docRef = db.collection("locations").doc("locations");
 
+          docRef.get().then(function(doc) {
+              if (doc.exists) {
+                  console.log("Document data:", doc.data());
+                  var temp0 = doc.data()[0];
+                  document.getElementById("listItem1").innerHTML = temp0;
+                  console.log(temp0);
+              } else {
+                  // doc.data() will be undefined in this case
+                  console.log("No such document!");
+              }
+          }).catch(function(error) {
+              console.log("Error getting document:", error);
+          });
+
+      }
 
 
       function signOut() {
-        firebase.auth().signOut().then(function() {
-          // Sign-out successful.
+        firebaseMain.auth().signOut().then(function() {
+          document.location.href = "index.html";
         }).catch(function(error) {
           // An error happened.
         });
