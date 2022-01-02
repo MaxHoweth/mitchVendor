@@ -1,5 +1,9 @@
 # MitchVendor Web Interface 
 
+
+### UNFORTUNATELY NOT HOSTED AT THIS TIME
+
+
 ### Turning Hours of Paperwork Into Seconds on your Phone or PC
 
 ### PURPOSE
